@@ -242,206 +242,74 @@ void SortMasUp(char mas[][N], int n)
 #include <time.h>
 using namespace std;
 
-#define N 5  //размерность массива
+#define X 3  //размерность массива
+#define Y 4  //размерность массива
+#define Z 5  //размерность массива
 
-void main();
+inline int IniN(void) { return rand() % 21 - 10; }
 
-template <typename T> void IniMas(T mas[][N], int n);
+void IniMas(int mas[], int z) { for (int i = 0; i < z; i++) mas[i] = IniN(); }
+void IniMas(int mas[][Z], int y, int z) { for (int i = 0; i < y; i++) IniMas(mas[i], z); }
+void IniMas(int mas[][Y][Z], int x, int y, int z) { for (int i = 0; i < x; i++) IniMas(mas[i], y, z); }
 
+void PrintMas(int mas[], int z) { for (int i = 0; i < z; i++) cout << "  " << mas[i] << "\t"; cout << "\n"; }
+void PrintMas(int mas[][Z], int y, int z) { cout << "\n"; for (int i = 0; i < y; i++) PrintMas(mas[i], z);  }
+void PrintMas(int mas[][Y][Z], int x, int y, int z) { cout << "\n"; for (int i = 0; i < x; i++) PrintMas(mas[i], y, z);  }
 
-void PrintMas(int mas[][N], int n);
-void PrintMas(double mas[][N], int n);
-void PrintMas(char mas[][N], int n);
-
-void MaxMinMas(int mas[][N], int n);
-void MaxMinMas(double mas[][N], int n);
-void MaxMinMas(char mas[][N], int n);
-
-void SortMasUp(int mas[][N], int n);
-void SortMasUp(double mas[][N], int n);
-void SortMasUp(char mas[][N], int n);
-
+int Max(int a, int b) { return (a > b) ? a : b; }
+int Max(int a, int b, int c) { return (a > Max(b, c)) ? a : Max(b, c); };
+int Max(int mas[], int z);
+int Max(int mas[][Z], int x, int y);
+int Max(int mas[][Y][Z], int x, int y, int z);
 
 
 void main()
 {
-	srand(int(time(NULL)));
+	srand(int(time(NULL)));	
+	
+	int a = IniN(), b = IniN(), c = IniN();
+	cout << "A = " << a << "\tB = " << b << "\tC = " << c << "\n";
+	cout << "Max A, B = " << Max(a, b) << "\tMax A, B, C = " << Max(a, b, c) << "\n\n";
 
-	int nMas[N][N];
-	double dMas[N][N];
-	char cMas[N][N];
-
-	IniMas(nMas, N);
-	IniMas(dMas, N);
-	IniMas(cMas, N);
-
-	PrintMas(nMas, N);
-	PrintMas(dMas, N);
-	PrintMas(cMas, N);
-
-	MaxMinMas(nMas, N);
-	MaxMinMas(dMas, N);
-	MaxMinMas(cMas, N);
-
-	SortMasUp(nMas, N);
-	SortMasUp(dMas, N);
-	SortMasUp(cMas, N);
-
-	PrintMas(nMas, N);
-	PrintMas(dMas, N);
-	PrintMas(cMas, N);
-
+	int mas1[Z], mas2[Y][Z], mas3[X][Y][Z];
+	IniMas(mas1, Z); IniMas(mas2, Y, Z); IniMas(mas3, X, Y, Z);
+	PrintMas(mas1, Z); cout << "Max MASS [] = " << Max(mas1, Z)<<"\n\n";
+	PrintMas(mas2, Y, Z); cout << "Max MASS [][] = " << Max(mas2, Y, Z) << "\n\n";
+	PrintMas(mas3, X, Y, Z); cout << "Max MASS [][][] = " << Max(mas3, X, Y, Z) << "\n\n";
 }
 
-template <typename T> void IniMas(T mas[][N], int n)
+int Max(int mas[], int z)
 {
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			
-			if (T is char) { mas[i][j] = T(rand() % 25) + 65; } //заполняем только прописными английскими буквами
-			else 
-				mas[i][j] = T(rand() % 201) / 10 - 10;
-		}
-	}
+	int max = mas[0];
+	for (int i = 1; i < z; i++)
+		if (mas[i] > max) max = mas[i];
+	return max;
 }
 
-
-
-void PrintMas(int mas[][N], int n)
+int Max(int mas[][Z], int y, int z)
 {
-	for (int i = 0; i < n; i++)
+	int max = Max(mas[0],z);	
+	for (int i = 1; i < y; i++)
 	{
-		for (int j = 0; j < n; j++)
-		{
-			cout << "  " << mas[i][j] << "\t";
-		}
-		cout << "\n";
+		int maxCurrent = Max(mas[i], z);
+		if (maxCurrent > max) max = maxCurrent;
 	}
+	return max;
 }
 
-void PrintMas(double mas[][N], int n)
+int Max(int mas[][Y][Z], int x, int y, int z)
 {
-	for (int i = 0; i < n; i++)
+	int max = Max(mas[0], y, z);
+	for (int i = 1; i < x; i++)
 	{
-		for (int j = 0; j < n; j++)
-		{
-			cout << "  " << mas[i][j] << "\t";
-		}
-		cout << "\n";
+		int maxCurrent = Max(mas[i], y, z);
+		if (maxCurrent > max) max = maxCurrent;
 	}
+	return max;
 }
 
-void PrintMas(char mas[][N], int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			cout << "  " << mas[i][j] << "\t";
-		}
-		cout << "\n";
-	}
-}
 
-void MaxMinMas(int mas[][N], int n)
-{
-	int min, max;
-	min = max = mas[0][0];
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			if (mas[i][j] < min) min = mas[i][j];
-			if (mas[i][j] > max) max = mas[i][j];
-		}
-	}
-	cout << "Min = " << min << "\t Max = " << max << "\n";
-}
 
-void MaxMinMas(double mas[][N], int n)
-{
-	double min, max;
-	min = max = mas[0][0];
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			if (mas[i][j] < min) min = mas[i][j];
-			if (mas[i][j] > max) max = mas[i][j];
-		}
-	}
-	cout << "Min = " << min << "\t Max = " << max << "\n";
-}
-
-void MaxMinMas(char mas[][N], int n)
-{
-	char min, max;
-	min = max = mas[0][0];
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			if (mas[i][j] < min) min = mas[i][j];
-			if (mas[i][j] > max) max = mas[i][j];
-		}
-	}
-	cout << "Min = " << min << "\t Max = " << max << "\n";
-}
-
-void SortMasUp(int mas[][N], int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		for (int jj = 0; jj < n; jj++)
-		{
-			for (int j = n - 1; j > jj; j--)
-				if (mas[i][j] < mas[i][j - 1])
-				{
-					int tmp = mas[i][j];
-					mas[i][j] = mas[i][j - 1];
-					mas[i][j - 1] = tmp;
-				}
-
-		}
-	}
-}
-
-void SortMasUp(double mas[][N], int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		for (int jj = 0; jj < n; jj++)
-		{
-			for (int j = n - 1; j > jj; j--)
-				if (mas[i][j] < mas[i][j - 1])
-				{
-					double tmp = mas[i][j];
-					mas[i][j] = mas[i][j - 1];
-					mas[i][j - 1] = tmp;
-				}
-		}
-	}
-}
-
-void SortMasUp(char mas[][N], int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		for (int jj = 0; jj < n; jj++)
-		{
-			for (int j = n - 1; j>jj; j--)
-				if (mas[i][j] < mas[i][j - 1])
-				{
-					char tmp = mas[i][j];
-					mas[i][j] = mas[i][j - 1];
-					mas[i][j - 1] = tmp;
-				}
-
-		}
-	}
-}
 
 // ДЗ 3 =================================================
 
