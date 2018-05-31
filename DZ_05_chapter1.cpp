@@ -107,7 +107,7 @@ void IniMas(char mas[][N], int n)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			mas[i][j] = (rand() % 25) + 65;
+			mas[i][j] = (rand() % 25) + 65;// Заполняем только A..Z
 		}
 	}
 }
@@ -307,7 +307,6 @@ int Max(int mas[][Y][Z], int x, int y, int z)
 	}
 	return max;
 }
-
 
 
 
