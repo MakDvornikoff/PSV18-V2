@@ -31,8 +31,6 @@ using namespace std;
 
 #define N 5  //размерность массива
 
-void main();
-
 void IniMas(int mas[][N], int n);
 void IniMas(double mas[][N], int n);
 void IniMas(char mas[][N], int n);
