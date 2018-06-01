@@ -105,7 +105,7 @@ void IniMas(char mas[][N], int n)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			mas[i][j] = (rand() % 25) + 65;// Заполняем только A..Z
+			mas[i][j] = rand() % 26 + 65;// Заполняем только A..Z
 		}
 	}
 }
@@ -355,7 +355,7 @@ template <typename T> void IniMas(T mas[][N], int n)
 	{
 		for (int j = 0; j < n; j++)
 		{			
-			if (std::is_same<T, char>::value) mas[i][j] = (rand() % 25) + 65; // Заполняем только A..Z
+			if (std::is_same<T, char>::value) mas[i][j] = rand() % 26 + 65; // Заполняем только A..Z
 			else
 				mas[i][j] = T(rand() % 201) / 10 - 10;
 		}
