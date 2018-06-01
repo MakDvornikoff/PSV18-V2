@@ -104,5 +104,133 @@ void SortMasInsertUp(int mas[], int n) //ДЗ 2
 ДЗ 2  находится внутри ДЗ 1
 
 // ДЗ 3 =================================================
+#include <iostream>
+#include <time.h>
+using namespace std;
+
+//#define TEST   //для теста - заполнение массива RANDOM()
+#define BalStpnd 10.7  //средний бал для стипендии
+#define nOcenok 10  //количество оценок для студента
+#define MaxBal 12   //максимальный бал для оценки
+#define msgNoCorrectCin cout<<"\nнеправильно ввели, повторите ввод\n\n"
+
+void IniMas(int mas[], int n);
+void Peresdacha(int mas[], int n);
+void CinElementMas(int mas[], int n, int NumMas);
+void PrintMas(int mas[], int n);
+void Peresdacha(int mas[], int n);
+void ChekStipendiya(int mas[], int n);
+
+void main()
+{
+	srand(int(time(NULL)));
+	setlocale(LC_ALL, "RUSSIAN");
+	
+	int mas[nOcenok];
+	IniMas(mas, nOcenok);
+
+	int menu = -1;
+	while (menu)
+	{
+		cout << "Вывод оценок студента <1>\n";
+		cout << "Пересдача экзамена    <2>\n";
+		cout << "Выходит ли стипендия  <3>\n";
+		cout << "Выход из программы    <0>\n";
+		cout << "Выберите пункт меню   >";
+		cin >> menu;
+		if (!menu) break;
+		switch (menu)
+		{
+		case 1: {
+			PrintMas(mas, nOcenok);
+			break;
+		}
+		case 2: {
+			Peresdacha(mas, nOcenok);
+			break;
+		}
+		case 3: {
+			ChekStipendiya(mas, nOcenok);
+			break;
+		}
+		default: {
+			msgNoCorrectCin;
+			break;
+		}
+		}
+
+	}
+}
+
+void PrintMas(int mas[], int n)
+{
+	cout << "Оценки студента:\n";
+	for (int i = 0; i < n; i++)
+	{
+		cout << "[" << i + 1 << "] = " << mas[i] << "\n";
+	}
+}
+
+void Peresdacha(int mas[], int n)
+{
+	cout << "Пересдача экзамена :\n";
+	bool err;
+	do {
+		cout << "Введите номер экзамена >";
+		int num; cin >> num;
+		err = (num<1 || num>nOcenok);
+		if (err)
+			msgNoCorrectCin;
+		else {
+			cout << "Введите новую оценку :";
+			CinElementMas(mas, n, num-1);
+		}
+	} while (err);
+}
+
+void ChekStipendiya(int mas[], int n)
+{
+	int sum = 0;
+	for (int i = 0; i < n; i++) sum += mas[i];
+	if (double(sum) / n < BalStpnd) 
+		cout << "Стипендии нет...\n"; 
+	else cout << "Стипендия есть!\n";
+}
+
+void CinElementMas(int mas[], int n, int NumMas)
+{
+	bool err;
+	do
+	{
+		int o;
+		cout << "[" << NumMas + 1 << "] = ";
+		cin >> o;
+		err = (o<1 || o>MaxBal);
+		if (err)
+			msgNoCorrectCin;
+		else mas[NumMas] = o;
+} while (err);
+}
+
+#ifdef TEST
+void IniMas(int mas[], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		mas[i] = rand() % MaxBal+1;
+	}
+}
+#else
+void IniMas(int mas[], int n)
+{
+	cout << "Введите " << nOcenok << " оценок студента :\n";
+	for (int i = 0; i < n; i++)
+	{
+		CinElementMas(mas,n,i);
+	}
+}
+#endif
+
+
 
 // ДЗ 4 =================================================
