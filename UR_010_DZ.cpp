@@ -32,142 +32,166 @@
 #include <time.h>
 using namespace std;
 
-#define N 10 // размерность массива
-#define MyType double //тип массива int, double, float
+#define N 10
+#define MyType int
 
-template <typename T> T SrArifm(T mas[], int n) {
-	T sum = 0;
-	for (int i = 0; i < n; i++)
-		sum += mas[i];
-	return sum / n;
-}
+template <typename T> void Sort(T mas[], int n, bool direct =1);
+template <typename T> void Init(T mas[], int n);
+template <typename T> void Print(T mas[], int n);
 
-template <typename T> void Init(T mas[], int n) {
-	for (int i = 0; i < n; i++) 
-		mas[i] = T(rand() % 201) / 10 - 10;
-}
-
-template <typename T> void Print(T mas[], int n) { 
-	cout << "\n"; 
-	for (int i = 0; i < n; i++)
-		cout << "  " << mas[i] << "\t"; 
-	cout << "\n"; 
-}
-
-void main()
-{
+void main() {
 	srand(int(time(NULL)));
-	setlocale(LC_ALL, "RUSSIAN");
-
 	MyType mas[N];
 	Init(mas, N);
 	Print(mas, N);
-	cout << "Среднее арифметическое = " << SrArifm(mas, N)<<"\n";
+	Sort(mas, N);
+	Print(mas, N);
+	Sort(mas, N,0);
+	Print(mas, N);
+}
+template <typename T> void Sort(T mas[], int n, bool direct ) {
+	int k;
+	if (direct) k = 1; else k = -1;
+	for (int i = 0; i < n; i++)
+		for (int j = n - 1; j>i; j--)
+			if (k*mas[j] < k*mas[j - 1]) {
+				T tmp = mas[j];
+				mas[j] = mas[j - 1];
+				mas[j - 1] = tmp;
+			}
 }
 
+template <typename T> void Init(T mas[], int n) {
+	for (int i = 0; i < n; i++)
+		mas[i] = T(rand() % 201) / 10 - 10;
+}
+template <typename T> void Print(T mas[], int n) {
+	for (int i = 0; i < n; i++)
+		cout << "  " << mas[i] << "\t";
+	cout<<"\n";
+}
 
 // ДЗ 2 =================================================
 
 #include <iostream>
-#include <math.h>
+#include<time.h>
 using namespace std;
 
-template <typename T1, typename T2> void Koren(T1 a, T2 b);
-template <typename T1, typename T2, typename T3> void Koren(T1 a, T2 b, T3 c);
-template <typename T1, typename T2, typename T3> void PrintAndKoren(T1 a, T2 b, T3 c);
+#define N 10
+#define MyType double
 
-void main()
-{
-	setlocale(LC_ALL, "RUSSIAN");
-
-	PrintAndKoren(13, -4, 9);
-	PrintAndKoren(0, -4, 9);
-	PrintAndKoren(13, 0, 9);
-	PrintAndKoren(13, -4, 0);
-	PrintAndKoren(0, 0, 9);
-	PrintAndKoren(13, 0, 0);
-	PrintAndKoren(0, -4, 0);
-	PrintAndKoren(0, 0, 0);
+template <typename T> void Init(T mas[], int n);
+template <typename T> void Print(T mas[], int n);
+template <typename T> void Sort(T mas[], int n, int start, int end, int direction=1);
+template <typename T> int ScanMinus(T mas[], int n, int direction = 1);
+void main (){
+	srand(int(time(NULL)));
+	MyType mas[N];
+	Init(mas, N);
+	Print(mas, N);
+	Sort(mas, N, ScanMinus(mas, N, 1)+1, ScanMinus(mas, N, 0)-1);
+	Print(mas, N);
 }
-template<typename T1, typename T2, typename T3>
-void PrintAndKoren(T1 a, T2 b, T3 c)
+
+template<typename T>
+void Init(T mas[], int n)
 {
-	cout << "A = " << a << "\tB = " << b << "\tC = " << c << "\n";
-	cout << "Решение линейного уравнения :\n";
-	Koren(a, b);
-	cout << "Решение квадратного уравнения\n";
-	Koren(a, b, c);
+	for (int i = 0; i < n; i++)
+		mas[i] = T(rand() % 401) / 10 - 20;
+}
+
+template<typename T>
+void Print(T mas[], int n)
+{
+	for (int i = 0; i < n; i++)
+		cout << "  " << mas[i] << "\t";
 	cout << "\n";
 }
 
-template <typename T1, typename T2>
-void Koren(T1 a, T2 b)
+template<typename T>
+void Sort(T mas[], int n, int start, int end, int direction)
 {
-	if (a == 0) {
-		cout << " >Уравнение не имеет решений.\n";
-		return;
-	}
-	if (a == 0 && b == 0) {
-		cout << " >Уравнение имеет бесчисленное множество решений.\n";
-		return;
-	}
-	cout << "X = " << double(-b) / a << "\n";
+	if (direction) direction = 1; else direction = -1;
+	for (int i=start;i<end;i++)
+		for (int j = end; j > i; j--) 			
+			if (direction*mas[j] < direction*mas[j - 1]) {
+				T tmp = mas[j];
+				mas[j] = mas[j - 1];
+				mas[j - 1] = tmp;
+			}		
 }
 
-template <typename T1, typename T2, typename T3>
-void Koren(T1 a, T2 b, T3 c)
+template<typename T>
+int ScanMinus(T mas[], int n, int direction)
 {
-	if (a == 0 && b == 0 && c != 0) {
-		cout << " >Уравнение не имеет решений.\n";
-		return;
+	int i;
+	if (direction) {
+		direction = 1;
+		i = 0;
 	}
-	if (a == 0 && b == 0 && c == 0) {
-		cout << " >Уравнение имеет бесчисленное множество решений\n";
-		return;
+	else {
+		direction = -1;
+		i = n - 1;
 	}
-	if (a == 0 && b != 0 && c != 0) {
-		Koren(b, c);
-		return;
-	}
-	if (c==0 && (a == 0 || b == 0)) {
-		cout << "X = 0\n";
-		return;
-	}
-	if (b == 0) {
-		cout << "X1 = "<< sqrt(double(c)/a)<<"\n";
-		cout << "X2 = " << -sqrt(double(c) / a) << "\n";
-		return;
-	}
-	
-	double d = b * b - 4 * a*c;
-	//cout << "D = " << d << "\n";
-	double n1 = double(-b) / 2 / a;
-	double n2 = sqrt(abs(d)) / 2 / a;
-	if (d < 0) {
-		cout << "X1 = " << n1 << " + " << n2 << " * i\n";
-		cout << "X2 = " << n1 << " - " << n2 << " * i\n";
-		return;
-	}
-	if (d > 0) {
-		cout << "X1 = " << n1  + n2 << "\n";
-		cout << "X2 = " << n1 - n2 << "\n";
-		return;
-	}
-	if (d == 0) {
-		cout << "X = " << n1<< "\n";
-	}
-
+	do {
+		if (mas[i] < 0) return i;
+		i += direction;
+	} while (i != 0 && i != (n - 1));
+	return -1;
 }
 
 
 // ДЗ 3 =================================================
 #include <iostream>
+#include <time.h>
 using namespace std;
 
+#define N 20
+#define RND(X) (rand() % X + 1)
+#define ITERRATION 10
 
-double Precission(double a, int n) { return int(a*pow(10, n) + .5) / pow(10, n); }
+void Init(int mas[],int n) { for (int i = 0; i < n; i++) mas[i] = i + 1;}
+int Find(int mas[],int n, int val) { for (int i = 0; i < n; i++) if (mas[i] == val) return i; return -1;}
+void Print(int mas[], int n) { for (int i = 0; i < n; i++) cout << "  " << mas[i] << "\t"; cout << "\n"; }
+void UnSort(int mas[],int n, int iterration);
+void Sort(int mas[], int n,int start, int end, int direction=1);
 
 void main() {
-	cout << Precission(12.1235444444, 3)<<"\n";
+	srand(int(time(NULL)));
+	int mas[N];
+	Init(mas, N);
+	Print(mas, N);
+	UnSort(mas, N, ITERRATION);
+	Print(mas, N);
+	int v = RND(N);
+	cout << "Value = " << v << "\n";
+	v = Find(mas, N, v);
+	cout << "Position = "<<v<<"\n";
+	Sort(mas, N, 0, v - 1, 0);
+	Sort(mas, N, v + 1, N - 1, 1);
+	Print(mas, N);
+}
+
+void UnSort(int mas[], int n, int iterration)
+{
+	for (int i = 0; i < iterration; i++) {
+		int p1 = RND(n)-1;
+		int p2 = RND(n)-1;
+		int tmp = mas[p1];
+		mas[p1] = mas[p2];
+		mas[p2] = tmp;
+	}
+}
+
+void Sort(int mas[], int n, int start, int end, int direction)
+{
+	if (direction>0) direction = 1; else direction = -1;
+	for (int i=start;i<end;i++)
+		for (int j=end;j>i;j--)
+			if (direction*mas[j] < direction*mas[j - 1]) {
+				int tmp = mas[j];
+				mas[j] = mas[j - 1];
+				mas[j - 1] = tmp;
+			}
 }
 
