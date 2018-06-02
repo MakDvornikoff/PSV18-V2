@@ -243,16 +243,16 @@ using namespace std;
 #define X 3  //размерность массива
 #define Y 4  //размерность массива
 #define Z 5  //размерность массива
+#define RND (rand() % 21 - 10)
 
-inline int IniN(void) { return rand() % 21 - 10; }
 
-void IniMas(int mas[], int z) { for (int i = 0; i < z; i++) mas[i] = IniN(); }
-void IniMas(int mas[][Z], int y, int z) { for (int i = 0; i < y; i++) IniMas(mas[i], z); }
-void IniMas(int mas[][Y][Z], int x, int y, int z) { for (int i = 0; i < x; i++) IniMas(mas[i], y, z); }
+void Init(int mas[], int z) { for (int i = 0; i < z; i++) mas[i] = RND; }
+void Init(int mas[][Z], int y, int z) { for (int i = 0; i < y; i++) Init(mas[i], z); }
+void Init(int mas[][Y][Z], int x, int y, int z) { for (int i = 0; i < x; i++) Init(mas[i], y, z); }
 
 void PrintMas(int mas[], int z) { for (int i = 0; i < z; i++) cout << "  " << mas[i] << "\t"; cout << "\n"; }
-void PrintMas(int mas[][Z], int y, int z) { cout << "\n"; for (int i = 0; i < y; i++) PrintMas(mas[i], z);  }
-void PrintMas(int mas[][Y][Z], int x, int y, int z) { cout << "\n"; for (int i = 0; i < x; i++) PrintMas(mas[i], y, z);  }
+void PrintMas(int mas[][Z], int y, int z) { cout << "\n"; for (int i = 0; i < y; i++) PrintMas(mas[i], z); }
+void PrintMas(int mas[][Y][Z], int x, int y, int z) { cout << "\n"; for (int i = 0; i < x; i++) PrintMas(mas[i], y, z); }
 
 int Max(int a, int b) { return (a > b) ? a : b; }
 int Max(int a, int b, int c) { return (a > Max(b, c)) ? a : Max(b, c); };
@@ -263,15 +263,15 @@ int Max(int mas[][Y][Z], int x, int y, int z);
 
 void main()
 {
-	srand(int(time(NULL)));	
-	
-	int a = IniN(), b = IniN(), c = IniN();
+	srand(int(time(NULL)));
+
+	int a = RND, b = RND, c = RND;
 	cout << "A = " << a << "\tB = " << b << "\tC = " << c << "\n";
 	cout << "Max A, B = " << Max(a, b) << "\tMax A, B, C = " << Max(a, b, c) << "\n\n";
 
 	int mas1[Z], mas2[Y][Z], mas3[X][Y][Z];
-	IniMas(mas1, Z); IniMas(mas2, Y, Z); IniMas(mas3, X, Y, Z);
-	PrintMas(mas1, Z); cout << "Max MASS [] = " << Max(mas1, Z)<<"\n\n";
+	Init(mas1, Z); Init(mas2, Y, Z); Init(mas3, X, Y, Z);
+	PrintMas(mas1, Z); cout << "Max MASS [] = " << Max(mas1, Z) << "\n\n";
 	PrintMas(mas2, Y, Z); cout << "Max MASS [][] = " << Max(mas2, Y, Z) << "\n\n";
 	PrintMas(mas3, X, Y, Z); cout << "Max MASS [][][] = " << Max(mas3, X, Y, Z) << "\n\n";
 }
@@ -286,7 +286,7 @@ int Max(int mas[], int z)
 
 int Max(int mas[][Z], int y, int z)
 {
-	int max = Max(mas[0],z);	
+	int max = Max(mas[0], z);
 	for (int i = 1; i < y; i++)
 	{
 		int maxCurrent = Max(mas[i], z);

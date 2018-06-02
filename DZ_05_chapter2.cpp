@@ -39,13 +39,15 @@ void main()
 	srand(int(time(NULL)));
 
 	int Mas[N];
-
+	
+	//ДЗ 1
 	cout << "\n\nSORT BUBBLE\n\n";
 	IniMas(Mas, N);
 	PrintMas(Mas, N);	
 	SortMasBubbleUp(Mas, N);
 	PrintMas(Mas, N);	
 	
+	//ДЗ 2
 	cout << "\n\nSORT INSERT\n\n";
 	IniMas(Mas, N);
 	PrintMas(Mas, N);
@@ -101,7 +103,7 @@ void SortMasInsertUp(int mas[], int n) //ДЗ 2
 
 
 // ДЗ 2 =================================================
-ДЗ 2  находится внутри ДЗ 1
+ДЗ 2  находится внутри ДЗ 1 - "void SortMasInsertUp(int mas[], int n)"
 
 // ДЗ 3 =================================================
 #include <iostream>
@@ -138,9 +140,9 @@ void main()
 		cout << "Выход из программы    <0>\n";
 		cout << "Выберите пункт меню   >";
 		cin >> menu;
-		if (!menu) break;
 		switch (menu)
 		{
+		case 0: break;
 		case 1: {
 			PrintMas(mas, nOcenok);
 			break;
@@ -246,7 +248,7 @@ using namespace std;
 
 template <typename T> void Init(T mas[], int n) { for (int i = 0; i < n; i++) mas[i] = T(rand() % 201) / 10 - 10; }
 template <typename T> void Print(T mas[], int n) { for (int i = 0; i < n; i++) cout << "  " << mas[i] << "\t"; cout << "\n"; }
-template <typename T> T SrArifm(T mas[], int n) { T sum = 0; for (int i = 0; i < n;  i++)sum += mas[i]; return sum / n; } //хотя можно было и не делить на n чтобы узнать знак - или +
+template <typename T> T SrArifm(T mas[], int n) { T sum = 0; for (int i = 0; i < n;  i++)sum += mas[i]; return sum / n; } 
 template <typename T> void SortUp(T mas[], int n, int start, int end);
 template <typename T> void Mirror(T mas[], int n, int start, int end);
 
